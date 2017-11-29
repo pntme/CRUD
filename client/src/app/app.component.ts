@@ -46,6 +46,7 @@ export class AppComponent implements OnInit {
   update() {
     this.editing = false;
     console.log(this.model);
+    // delete this.model.updated_at;
     this._ajax.Put('http://localhost:3000/users', this.model).then(res => {
       console.log(res);
       this.ngOnInit();

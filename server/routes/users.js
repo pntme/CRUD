@@ -5,14 +5,13 @@ var User = require('../modals/test_users');
 /* GET users listing. d*/
 router.get('/', function(req, res, next) {
     User.find({}, function(err, users) {
-        if (err) throw err;
+        if (err) throw next(err); 
         else
             res.send(users)
     });
 });
 
 router.post('/', function(req, res, next) {
-    console.log(req.body);
     var chris = new User(req.body);
     chris.save(function(err) {
         if (err) throw err;
@@ -26,9 +25,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.delete('/:_id', function(req, res, next) {
-    console.log(req.params);
     User.remove(req.params, function(err, users) {
-        if (err) throw err;
+        if (err) throw next(err); 
         else
             res.send({
                 error: 0,
@@ -39,15 +37,20 @@ router.delete('/:_id', function(req, res, next) {
 });
 
 router.put('/', function(req, res, next) {
-    User.update({
+    req.body.updatedAt = new Date();
+    User.findOneAndUpdate({
             _id: req.body._id
         }, req.body, {
-            upsert: true
+            upsert: true,
+            runValidators: true,
+            context: 'query' 
         },
+        
 
         function(err, user) {
-            if (err) throw err;
+            if (err) throw next(err); 
             // object of the user
+            console.log('saved')
             res.send({
                 error: 0,
                 data: user

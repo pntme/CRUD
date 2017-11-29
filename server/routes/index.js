@@ -10,17 +10,9 @@ mongoose.connect(mongo, {useMongoClient: true});
 
 var db = mongoose.connection;
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// MongoClient.connect('mongodb://localhost:27017/testApp', function (err, db) {
-//   if (err) throw err
-//   else console.log('connected');	
-
- 
-// })
 module.exports = router;

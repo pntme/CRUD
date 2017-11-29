@@ -11,24 +11,22 @@ var userSchema = new Schema({
   created_at: Date
 });
 
-// the schema is useless so far
-// we need to create a model using it
-
 
 userSchema.pre('save', function(next) {
-  // get the current date
+  console.log('calling save')
   var currentDate = new Date();
-
-  // change the updated_at field to current date
   this.updated_at = currentDate;
-
-  // if created_at doesn't exist, add to that field
   if (!this.created_at)
     this.created_at = currentDate;
+  next();
+});
 
+userSchema.pre('findOneAndUpdate', function(next) {
+   doc = this.getUpdate();
+   query = this.getQuery();
+   doc.updated_at = new Date();
   next();
 });
 var User = mongoose.model('User', userSchema);
 
-// make this available to our users in our Node applications
 module.exports = User;
