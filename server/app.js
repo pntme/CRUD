@@ -51,6 +51,7 @@ app.use('/admin', admin);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  console.log('here 404')
   next(err);
 });
 
